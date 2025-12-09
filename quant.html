@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>QuantumSoft - (logo.png)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+  <style>
+    :root{
+      --blue-900: #041233;
+      --blue-700: #0a2540;
+      --accent: #12c0e8;
+      --card-bg: #ffffff;
+      --muted: #6b7280;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:#052337;
+      background:#f6f8fb;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{display:block;max-width:100%;height:auto}
+    
+    .topbar{
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
+      box-shadow: 0 1px 0 rgba(0,0,0,0.06);
+      position: sticky; top:0; z-index:1000;
+      border-bottom:1px solid rgba(0,0,0,0.04);
+    }
+    .container{ max-width:1200px; margin:0 auto; padding:0 20px; }
+
+    .nav{
+      display:flex; align-items:center; justify-content:space-between; gap:16px; height:64px;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+    .brand .logo{
+      width:150px; height:40px; object-fit:contain; display:block}
+
+    .nav-links{
+      display:flex; align-items:center; gap:18px;
+      font-size:14px; color:var(--blue-900);
+    }
+
+    .nav-links .nav-item{ position:relative; }
+    .nav-links .nav-link{ padding:8px 6px; display:inline-block; color:var(--blue-900); }
+    .nav-links .nav-item:hover > .dropdown{
+      opacity:1; visibility:visible; transform:translateY(0);
+    }
+
+    .dropdown{
+      position:absolute; left:0; top:42px; background:#b3b1b1; border-radius:6px;
+      box-shadow: 0 8px 30px rgba(2,6,23,0.12);
+      min-width:180px; padding:8px; opacity:0; visibility:hidden; transform:translateY(-6px);
+      transition:all .18s ease;
+      z-index:1000;
+    }
+    .dropdown a{ display:block; padding:8px 10px; color:#05324a; border-radius:4px; font-size:14px; }
+    .dropdown a:hover{ background:#f3f9fb; }
+
+    /* mobile nav toggle */
+    .menu-toggle{ display:none; font-size:18px; cursor:pointer; color:var(--blue-900); }
+
+    /* ---------- HERO SLIDER ---------- */
+    .hero{
+      position:relative; height:560px; overflow:hidden; background:#051B34;
+      display:flex; align-items:center; color:#fff;
+    }
+    .slides{ height:100%; width:100%; position:relative; }
+    .slide{
+      position:absolute; inset:0; display:flex; align-items:center; padding:0 6%;
+      background-size:cover;background-position:center center; transition:opacity .8s ease, transform .8s ease;
+      opacity:0; transform:scale(1.02);
+    }
+    .slide.active{ opacity:1; transform:scale(1); z-index:1; }
+
+    .slide::before{
+      content:""; position:absolute; inset:0; background:linear-gradient(90deg, rgba(6,16,34,0.85) 0%, rgba(10,40,80,0.45) 40%, rgba(6,16,34,0.75) 100%); z-index:0;
+    }
+
+    .hero-inner{ position:relative; z-index:2; max-width:900px; color:#fff; }
+    .hero-title{ font-size:36px; font-weight:800; line-height:1.05; margin-bottom:12px; letter-spacing:-0.3px; }
+    .hero-sub{ color:rgba(255,255,255,0.8); font-size:15px; margin-bottom:22px; max-width:520px; }
+
+    .hero .controls{ position:absolute; top:50%; transform:translateY(-50%); z-index:3; width:100%; display:flex; justify-content:space-between; pointer-events:none; padding:0 8px; }
+    .hero .btn{
+      background:var(--accent); color: #00324a; border-radius:999px; width:44px; height:44px; display:flex; align-items:center; justify-content:center;
+      box-shadow: 0 6px 18px rgba(10,30,50,0.16); pointer-events:auto; cursor:pointer;
+    }
+    .hero .btn.secondary{ background:transparent; border:2px solid rgba(255,255,255,0.12); color:#fff; }
+    .slide-caption { max-width:520px; }
+
+    .features{ padding:54px 0; background:#fff; }
+    .features-grid{ display:flex; gap:18px; align-items:stretch; justify-content:space-between; }
+    .feature{
+      flex:1; background:linear-gradient(180deg,#ffffff,#fbfdff); border-radius:10px; padding:22px; box-shadow:0 6px 22px rgba(3,10,23,0.04);
+      display:flex; gap:16px; align-items:flex-start; transition:transform .18s ease;
+      opacity:0; transform:translateY(14px); 
+    }
+    .feature.visible{ opacity:1; transform:translateY(0); }
+    .feature .icon-wrap{ width:56px; height:56px; border-radius:999px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#002b38; flex-shrink:0; }
+    .feature h4{ font-size:15px; color:var(--blue-700); margin-bottom:6px; font-weight:700 }
+    .feature p{ font-size:13px; color:var(--muted); line-height:1.45; }
+
+
+    .about-section{ display:flex; gap:28px; align-items:center; padding:52px 0; }
+    .about-image{ flex:0 0 45%; border-radius:10px; overflow:hidden; box-shadow:0 8px 30px rgba(2,8,23,0.06); }
+    .about-text{ flex:1; }
+    .about-text h2{ color:var(--blue-700); font-size:26px; margin-bottom:12px; }
+    .about-text p{ color:var(--muted); font-size:15px; line-height:1.6; }
+
+    .counters{ background:linear-gradient(180deg,#06142a,#071b36); color:#fff; padding:36px 0; }
+    .counters-grid{ display:flex; gap:18px; justify-content:space-between; align-items:center; }
+    .counter-box{ flex:1; text-align:center; padding:20px; }
+    .counter-box .num{ font-size:28px; font-weight:800; color:var(--accent); margin-bottom:6px; }
+    .counter-box p{ font-size:13px; color:rgba(255,255,255,0.85); margin:0 }
+
+    .projects{ padding:48px 0; background:#fff; }
+    .projects-grid{ display:flex; gap:18px; justify-content:space-between; flex-wrap:wrap; }
+    .project{ flex-basis:32%; border-radius:10px; overflow:hidden; position:relative; box-shadow:0 10px 25px rgba(4,12,28,0.06); transition:transform .18s ease, box-shadow .18s ease; opacity:0; transform:translateY(24px); }
+    .project.visible{ opacity:1; transform:translateY(0); }
+    .project img{ width:100%; height:220px; object-fit:cover; display:block; }
+    .project .overlay{ position:absolute; left:0; right:0; bottom:0; padding:14px; background:linear-gradient(0deg, rgba(4,18,40,0.9), rgba(4,18,40,0.45)); color:#5356f7; transform:translateY(100%); transition:transform .2s ease; }
+    .project:hover{ transform:translateY(-6px); box-shadow:0 18px 50px rgba(9, 76, 209, 0.12) }
+    .project:hover .overlay{ transform:translateY(0); }
+
+    .projects{max-width:1200px;margin:22px auto;padding:20px}
+    .proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+    .proj{position:relative;border-radius:8px;overflow:hidden;background:#ddd}
+    .proj img{width:100%;height:220px;object-fit:cover;display:block}
+    .proj .meta{position:absolute;left:50%;transform:translateX(-50%);bottom:12px;background:rgba(0,0,0,0.6);color:#fff;padding:8px 12px;border-radius:8px;text-align:center;width:84%}
+    
+    .footer{ background:var(--blue-900); color:#dff6ff; padding:42px 0; margin-top:18px; }
+    .footer .footer-inner{ display:flex; gap:28px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap; }
+    .footer .logo-sm{ width:140px; height:48px; object-fit:contain; display:block; }
+    .footer .links{ display:flex; gap:32px; flex-wrap:wrap; }
+    .footer a{ color: rgba(255,255,255,0.85); font-size:14px; }
+    .footer small{ display:block; margin-top:14px; color:rgba(255,255,255,0.6) }
+
+    .backtop{ position:fixed; right:18px; bottom:18px; z-index:1200; width:44px; height:44px; border-radius:999px; background:var(--accent); display:flex; align-items:center; justify-content:center; color:#00324a; box-shadow:0 8px 30px rgba(2,8,20,0.18); cursor:pointer; }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .features-grid{ flex-direction:column; }
+      .about-section{ flex-direction:column; }
+      .counters-grid{ flex-direction:column; gap:10px; }
+      .projects-grid{ gap:14px; }
+      .project{ flex-basis:48% }
+      .nav-links{ display:none }
+      .menu-toggle{ display:block }
+    }
+    @media (max-width:600px){
+      .project{ flex-basis:100% }
+      .hero{ height:500px }
+      .hero-title{ font-size:15px }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container nav">
+      <div class="brand">
+        <img class="logo" src="logo.png" alt="Logo placeholder" />
+      </div>
+
+      <nav class="nav-links">
+        <div class="nav-item">
+          <a class="nav-link" href="#">Home</a>
+        </div>
+
+        <div class="nav-item">
+          <a class="nav-link" href="#">About <i class="fa fa-caret-down" style="font-size:12px;margin-left:6px;color:#0b3760;"></i></a>
+          <div class="dropdown">
+            <a href="#about">Company</a>
+            <a href="#features">Values</a>
+            <a href="#contact">Contact</a>
+          </div>
+        </div>
+
+        <div class="nav-item">
+          <a class="nav-link" href="#services">Services <i class="fa fa-caret-down" style="font-size:12px;margin-left:6px;color:#0b3760;"></i></a>
+          <div class="dropdown">
+            <a href="#services">All Services</a>
+            <a href="web_development.html">Web Development</a>
+            <a href="cyber_security.html">Cyber Security</a>
+            <a href="cloud_services.html">Cloud Services</a>
+          </div>
+        </div>
+
+        <div class="nav-item"><a class="nav-link" href="#projects">Projects</a></div>
+        <div class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></div>
+        <div class="nav-item"><a class="nav-link" href="#contact">Contact</a></div>
+      </nav>
+
+      <div class="menu-toggle" id="mobileToggle"><i class="fa fa-bars"></i></div>
+    </div>
+  </header>
+  <section class="hero" aria-label="Hero slider">
+    <div class="slides">
+      <div class="slide active" data-index="0" style="background-image: url('Geospatial Services1.jpg');">
+        <div class="hero-inner slide-caption">
+          <div style="max-width:640px">
+            <h2 class="hero-title">Empowering Innovation, <br/> Delivering Excellence.</h2>
+            <p class="hero-sub">Engineering tomorrow’s technology, today’s solutions. Innovating with passion, scaling with precision.</p>
+          </div>
+        </div>
+      </div>
+      <div class="slide" data-index="1" style="background-image: url('background 1.jpg');">
+        <div class="hero-inner slide-caption">
+          <div style="max-width:640px">
+            <h2 class="hero-title">Build Scalable Apps & Cloud Solutions</h2>
+            <p class="hero-sub">Secure, efficient, and future-ready platforms that drive growth.</p>
+          </div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="btn" id="prevSlide" title="Previous"><i class="fa fa-chevron-left"></i></div>
+        <div class="btn secondary" id="nextSlide" title="Next"><i class="fa fa-chevron-right"></i></div>
+      </div>
+    </div>
+  </section>
+  <section id="features" class="features">
+    <div class="container">
+      <div class="features-grid">
+        <div class="feature" data-anim>
+          <div class="icon-wrap"><i class="fa fa-lightbulb fa-lg"></i></div>
+          <div>
+            <h4>Innovation and Technology</h4>
+            <p>Lead in developing cutting-edge solutions across software, hardware & services.</p>
+          </div>
+        </div>
+
+        <div class="feature" data-anim>
+          <div class="icon-wrap"><i class="fa fa-globe fa-lg"></i></div>
+          <div>
+            <h4>Global Reach and Impact</h4>
+            <p>Delivering solutions that cross geographic boundaries and industries.</p>
+          </div>
+        </div>
+
+        <div class="feature" data-anim>
+          <div class="icon-wrap"><i class="fa fa-users fa-lg"></i></div>
+          <div>
+            <h4>Human Capital & Skills</h4>
+            <p>We nurture talent—continuous learning and growth are core to our culture.</p>
+          </div>
+        </div>
+
+        <div class="feature" data-anim>
+          <div class="icon-wrap"><i class="fa fa-atom fa-lg"></i></div>
+          <div>
+            <h4>Challenges & Opportunities</h4>
+            <p>We solve complex problems and turn challenges into business advantage.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="about" class="about-section container">
+    <div class="about-image" data-anim>
+      <img src="About-Us01 (499 kb).jpeg" alt="About image (placeholder)" />
+    </div>
+    <div class="about-text" data-anim>
+      <h2>Empower Digital Growth With Technology</h2>
+      <p>At QuantumSoft Technologies we partner with businesses to drive digital growth. Our expertise in cloud computing, AI, data analytics, automation, and enterprise solutions enables organizations to modernize operations, enhance customer experiences, and achieve sustainable success.</p>
+      <p style="margin-top:12px;color:var(--muted)">Replace the text with your copy — the layout is flexible so long paragraphs and lists look good on the right side, and the image scales responsively on smaller screens.</p>
+    </div>
+  </section>
+  <section class="counters">
+    <div class="container">
+      <div class="counters-grid">
+        <div class="counter-box" data-anim>
+          <div class="num" data-target="500">0</div>
+          <p>Happy Clients</p>
+        </div>
+        <div class="counter-box" data-anim>
+          <div class="num" data-target="150">0</div>
+          <p>Ongoing Projects</p>
+        </div>
+        <div class="counter-box" data-anim>
+          <div class="num" data-target="1000">0</div>
+          <p>Employees</p>
+        </div>
+        <div class="counter-box" data-anim>
+          <div class="num" data-target="4">0</div>
+          <p>Years Of Experience</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="services" class="projects">
+    <div class="container">
+      <h3 style="text-align:center;color:var(--blue-700);margin-bottom:20px">OUR SERVICES</h3>
+
+      <div class="projects-grid">
+        <div class="project" data-anim>
+           <strong>Web Development</strong>
+          <h2>We deliver smart, user-focused web solutions with intuitive design and clean, scalable code. Our websites and applications are built for performance, security, and ease of use—helping businesses engage users, achieve goals, and drive measurable growth.​</h2>
+          <div class="overlay">
+            <div style="font-size:20px;color:rgba(255,255,255,0.9)">User-focused, scalable websites & web apps.</div>
+          </div>
+        </div>
+        <div class="project" data-anim>
+          <strong>App Development</strong>
+          <h2>We build high-performance mobile apps with sleek design, powerful features, and seamless user experience. From Android to iOS, our secure, scalable solutions help drive engagement and business growth.​</h2>
+          <div class="overlay">
+            
+            <div style="font-size:20px;color:rgba(255,255,255,0.9)">Mobile apps for Android & iOS with great UX.</div>
+          </div>
+        </div>
+        <div class="project" data-anim>
+          <strong>Software Dev</strong>
+          <h2>We build scalable, secure, and high-performing software solutions tailored to your business needs—streamlining operations and driving growth with clean, future-ready technology.​​</h2>
+          <div class="overlay">
+            <div style="font-size:20px;color:rgba(255,255,255,0.9)">Enterprise & custom solutions built to scale.</div>
+          </div>
+        </div>
+      </div>
+      <div class="projects-grid" style="margin-top:18px">
+        <div class="project" data-anim>
+          <strong>Cyber Security</strong>
+          <h2>We protect your digital assets with advanced cybersecurity solutions. From threat detection and risk assessment to data protection and compliance, our services ensure your systems stay secure, resilient, and one step ahead of evolving cyber threats.​</h2>
+          <div class="overlay"><div style="font-size:20px;color:rgba(255,255,255,0.9)">Risk assessments, monitoring & protection.</div></div>
+        </div>
+
+        <div class="project" data-anim>
+          <strong>UI / UX</strong>
+          <h2>We craft intuitive and visually engaging UI/UX designs that enhance user satisfaction and drive interaction. Our design approach blends creativity with usability to deliver seamless digital experiences across web and mobile platforms.​</h2>
+          <div class="overlay"><div style="font-size:20px;color:rgba(255,255,255,0.9)">Designs that delight users & improve conversion.</div></div>
+        </div>
+
+        <div class="project" data-anim>
+          <strong>Cloud Services</strong>
+          <h2>We offer reliable and scalable cloud solutions that optimize performance, enhance security, and reduce infrastructure costs. We help businesses harness the full power of AWS, Azure, and other leading platforms.​</h2>
+          <div class="overlay"><div style="font-size:20px;color:rgba(255,255,255,0.9)">AWS / Azure / GCP migrations & ops.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+    <section id="projects" class="projects">
+      <h2 style="text-align:center;margin-bottom:12px">Our Projects</h2>
+      <div class="proj-grid">
+        <div class="proj">
+          <img src="project-1.jpg" alt="project">
+          <div class="meta"><strong>Web Development</strong><div style="font-size:.9rem;opacity:.95">Web Analysis</div></div>
+        </div>
+
+        <div class="proj">
+          <img src="project-2.jpg" alt="project">
+          <div class="meta"><strong>Cyber Security</strong><div style="font-size:.9rem;opacity:.95">Core Security</div></div>
+        </div>
+
+        <div class="proj">
+          <img src="project-3.jpg" alt="project">
+          <div class="meta"><strong>Software Development</strong><div style="font-size:.9rem;opacity:.95">Upcoming Softwares</div></div>
+        </div>
+      </div>
+    </section>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <img class="logo-sm" src="logo.png" alt="footer logo"/>
+        <small>QuantumSoft Technologies — Building digital solutions.</small>
+      </div>
+
+      <div class="links">
+        <div><a href="#">Home</a></div>
+        <div><a href="#services">Services</a></div>
+        <div><a href="#projects">Projects</a></div>
+        <div><a href="#contact">Contact</a></div>
+        <div><a href="#Blogs & New"></a>Blogs & New</div>
+        <div><a href="#Careers"></a>Careers</div>
+        <div><a href="#Testimonials">Testimonials</a></div>
+      </div>
+
+      <div style="min-width:180px">
+        <div style="color:rgba(255,255,255,0.9);font-size:14px;font-weight:700;margin-bottom:8px"></div>
+        <div>
+          <h4 style="margin-bottom:8px">Contact</h4>
+          <small>07070504555</small><br>
+          <small>abdussamadajala@gmail.com</small><br>
+          <small>Solitaire Business Hub, Pune</small>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <div class="backtop" id="backtop" title="Back to top"><i class="fa fa-arrow-up"></i></div>
+
+  <script>
+    
+    (function(){
+      const slides = document.querySelectorAll('.slide');
+      let idx = 0;
+      const total = slides.length;
+      const nextBtn = document.getElementById('nextSlide');
+      const prevBtn = document.getElementById('prevSlide');
+
+      function show(i){
+        slides.forEach(s => s.classList.remove('active'));
+        slides[i].classList.add('active');
+      }
+      function next(){ idx = (idx + 1) % total; show(idx); }
+      function prev(){ idx = (idx - 1 + total) % total; show(idx); }
+
+      let autoplay = setInterval(next, 6000);
+      if(nextBtn) nextBtn.addEventListener('click', ()=>{ next(); clearInterval(autoplay); autoplay = setInterval(next,6000); });
+      if(prevBtn) prevBtn.addEventListener('click', ()=>{ prev(); clearInterval(autoplay); autoplay = setInterval(next,6000); });
+
+      document.querySelector('.hero').addEventListener('mouseenter', ()=> clearInterval(autoplay));
+      document.querySelector('.hero').addEventListener('mouseleave', ()=> autoplay = setInterval(next,6000));
+    })();
+
+    (function(){
+      const animItems = document.querySelectorAll('[data-anim]');
+      const counterEls = document.querySelectorAll('.num');
+
+      function reveal(){
+        const trigger = window.innerHeight * 0.82;
+        animItems.forEach(el=>{
+          const top = el.getBoundingClientRect().top;
+          if(top < trigger) el.classList.add('visible');
+        });
+        counterEls.forEach(el=>{
+          if(el.dataset.animated) return;
+          const top = el.getBoundingClientRect().top;
+          if(top < trigger){
+            el.dataset.animated = "1";
+            const target = parseInt(el.dataset.target,10) || 0;
+            let count = 0;
+            const step = Math.max(1, Math.floor(target/100));
+            const t = setInterval(()=>{
+              count += step;
+              if(count >= target){
+                el.textContent = (target>=1000)? target.toLocaleString() : target;
+                clearInterval(t);
+              } else {
+                el.textContent = (count>=1000)? count.toLocaleString() : count;
+              }
+            }, 12);
+          }
+        });
+      }
+
+      window.addEventListener('scroll', reveal);
+      window.addEventListener('load', reveal);
+      reveal();
+    })();
+
+    (function(){
+      const bt = document.getElementById('backtop');
+      bt.addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+      window.addEventListener('scroll', ()=> {
+        if(window.scrollY > 420) bt.style.display = 'flex';
+        else bt.style.display = 'none';
+      });
+      bt.style.display = 'none';
+    })();
+
+    (function(){
+      const toggle = document.getElementById('mobileToggle');
+      toggle.addEventListener('click', ()=>{
+        const navLinks = document.querySelector('.nav-links');
+        if(!navLinks) return;
+        if(navLinks.style.display === 'flex') navLinks.style.display = '';
+        else navLinks.style.display = 'flex';
+      });
+    })();
+
+    
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'ArrowLeft') document.getElementById('prevSlide')?.click();
+      if(e.key === 'ArrowRight') document.getElementById('nextSlide')?.click();
+    });
+  </script>
+</body>
+</html>
